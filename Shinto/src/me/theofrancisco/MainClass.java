@@ -2,14 +2,13 @@ package me.theofrancisco;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,9 +20,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.swing.BoxLayout;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -36,9 +32,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.ComponentOrientation;
 import java.awt.Toolkit;
 
 //TODO:
@@ -75,7 +72,7 @@ import java.awt.Toolkit;
 //Si se ejecuta el programa desde otra pc y se cargan las tarjetas, al no encontrar las preguntas va eliminando las preguntas, solucion: 
 //despues de cargar las tarjetas comprobar que exista el directorio si no existe, pedir que indique donde esta.
 
-public class ShintoFlashCard implements PanelInterfaz {
+public class MainClass implements PanelInterfaz {
 
 	final int MYAPP_WIDTH = 900;
 	final int MYAPP_HEIGH = 600;
@@ -106,7 +103,7 @@ public class ShintoFlashCard implements PanelInterfaz {
 	private JPanel buttonPanel;
 	private JPanel panelInfo;
 	private JPanel addQuestionPanel;
-	private static ShintoFlashCard window;
+	private static MainClass window;
 
 	/**
 	 * Launch the application.
@@ -116,7 +113,7 @@ public class ShintoFlashCard implements PanelInterfaz {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					window = new ShintoFlashCard();
+					window = new MainClass();
 					window.myApp.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -128,18 +125,15 @@ public class ShintoFlashCard implements PanelInterfaz {
 	/**
 	 * Create the application.
 	 */
-	public ShintoFlashCard() {
+	public MainClass() {
 		initialize();
 	}
 
 	private void unselectAnswerButtons(Color _defaultBckColor) {
-		for (JButton b : optionsButton) {
-			if (b == null) {
-				System.out.println("Options Buttons are null!. Error. ");
-				return;
-			}
+		for (JButton b : optionsButton) {		
 			b.setSelected(false);
 			b.setBackground(_defaultBckColor);
+			b.setOpaque(true);
 		}
 	}
 
@@ -147,8 +141,7 @@ public class ShintoFlashCard implements PanelInterfaz {
 		if (e.getSource() instanceof JButton) {
 			JButton b = (JButton) e.getSource();
 			b.setSelected(!b.isSelected());
-			if (b.isSelected()) {
-				b.setContentAreaFilled(false);
+			if (b.isSelected()) {				
 				b.setBackground(new Color(46, 139, 87));
 			} else
 				b.setBackground(defaultBckColor);
@@ -181,7 +174,7 @@ public class ShintoFlashCard implements PanelInterfaz {
 		});
 
 		util = new Util();
-		myApp.setBounds(10, 52, 900, 670);
+		myApp.setBounds(10, 52, 1200, 670);
 		
 		//myApp.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		BorderLayout appLayout = new BorderLayout();
@@ -201,21 +194,19 @@ public class ShintoFlashCard implements PanelInterfaz {
 		panelInfo.add(lblSubject);
 
 		lblQuestionNumber = new JLabel("Question:");
-		lblQuestionNumber.setPreferredSize(new Dimension ( 70,20));		
+		lblQuestionNumber.setPreferredSize(new Dimension ( 180,20));		
 		panelInfo.add(lblQuestionNumber);
 
 		lblTotalOk = new JLabel("OK:");
-		lblTotalOk.setPreferredSize(new Dimension ( 70,20));		
+		lblTotalOk.setPreferredSize(new Dimension ( 50,20));		
 		panelInfo.add(lblTotalOk);
 
 		lblTotalFail = new JLabel("Fail: ");
-		lblTotalFail.setPreferredSize(new Dimension ( 70,20));
-		//lblTotalOk.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblTotalFail.setPreferredSize(new Dimension ( 100,20));		
 		panelInfo.add(lblTotalFail);
 
 		lblSource = new JLabel("Source:");
-		lblSource.setPreferredSize(new Dimension ( 200,20));
-		//lblSource.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblSource.setPreferredSize(new Dimension ( 500,20));		
 		panelInfo.add(lblSource);
 
 		myApp.getContentPane().add(panelInfo, BorderLayout.PAGE_START);
@@ -248,16 +239,16 @@ public class ShintoFlashCard implements PanelInterfaz {
 			buttonPanel.setLayout(buttonPanelLayout);
 
 			optionsButton = new JButton[7];
-			String letters[] = { "A", "B", "C", "D", "E", "F", "G" };
+			String letters[] = { "A", "B", "C", "D", "E", "F", "G","H" };
 
 			defaultBckColor = new JButton().getBackground();
 
 			for (int i = 0; i < optionsButton.length; i++) {
 				optionsButton[i] = new JButton(letters[i]);
 
-				// optionsButton[i].setBorder(UIManager.getBorder("Button.border"));
-				// optionsButton[i].setSelected(false);
-				// optionsButton[i].setOpaque(true);
+				optionsButton[i].setBorder(UIManager.getBorder("Button.border"));
+				optionsButton[i].setSelected(false);
+				optionsButton[i].setOpaque(true);
 				optionsButton[i].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				optionsButton[i].addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -537,7 +528,7 @@ public class ShintoFlashCard implements PanelInterfaz {
 			lblSubject.setText("Subject: " + currentQuestion.getSubject());
 			lblQuestionNumber.setText("Question: " + currentCardSet.getTodayCards());
 			lblTotalOk.setText("Ok: " + currentQuestion.getTotalCorrect());
-			lblTotalFail.setText("Wrong: " + currentQuestion.getTotalWrong());
+			lblTotalFail.setText("Fails: " + currentQuestion.getTotalWrong());
 			show(currentQuestion.getPath().toString());
 			shownQuestion = true;
 			lblSource.setText("Source: " + currentQuestion.getPath());
@@ -679,8 +670,11 @@ public class ShintoFlashCard implements PanelInterfaz {
 
 			AppProperties appProperties = new AppProperties();
 			String lastDir = appProperties.getLastSetDirectory();
+			
+			FileNameExtensionFilter fileFilter = new FileNameExtensionFilter("Card Set File", "set");
 
 			JFileChooser fc = new JFileChooser();
+			 fc.setFileFilter(fileFilter);
 
 			if (lastDir != null) {
 				fc.setCurrentDirectory(new File(lastDir));

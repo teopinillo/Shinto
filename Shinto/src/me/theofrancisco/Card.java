@@ -10,9 +10,6 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-//TODO:
-//La pregunta 0 se muestra dos veces, porque?
-
 public class Card implements Serializable {
 
 	/**
