@@ -73,7 +73,7 @@ public class MainClass implements PanelInterfaz {
 
 	final int MYAPP_WIDTH = 900;
 	final int MYAPP_HEIGH = 600;
-	
+
 	private JFrame myApp;
 	private Card currentCardSet;
 	private Util util;
@@ -96,11 +96,12 @@ public class MainClass implements PanelInterfaz {
 	private JButton btnRefresh;
 	private JButton[] optionsButton = new JButton[7];
 	private Color defaultBckColor;
-	private static final String versionDate = "01/18/2018";
+	private static final String versionDate = "01/25/2020";
 	private JPanel buttonPanel;
 	private JPanel panelInfo;
 	private JPanel addQuestionPanel;
 	private static MainClass window;
+	private JButton btnNumbers;
 
 	/**
 	 * Launch the application.
@@ -127,7 +128,7 @@ public class MainClass implements PanelInterfaz {
 	}
 
 	private void unselectAnswerButtons(Color _defaultBckColor) {
-		for (JButton b : optionsButton) {		
+		for (JButton b : optionsButton) {
 			b.setSelected(false);
 			b.setBackground(_defaultBckColor);
 			b.setOpaque(true);
@@ -138,7 +139,7 @@ public class MainClass implements PanelInterfaz {
 		if (e.getSource() instanceof JButton) {
 			JButton b = (JButton) e.getSource();
 			b.setSelected(!b.isSelected());
-			if (b.isSelected()) {				
+			if (b.isSelected()) {
 				b.setBackground(new Color(46, 139, 87));
 			} else
 				b.setBackground(defaultBckColor);
@@ -151,59 +152,54 @@ public class MainClass implements PanelInterfaz {
 	private void initialize() {
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		myApp = new JFrame();
-		myApp.setTitle("Shinto Flash Card v1.0 " + versionDate);
-		myApp.setIconImage(Toolkit.getDefaultToolkit().getImage("\\shinto_32x32.png"));
-		
-
+		myApp.setTitle("Mastery");			
 		myApp.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
 			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 				// TODO:
 				// Check if the current file is valid o is not null
 				saveCard(currentFile);
-
 				if (JOptionPane.showConfirmDialog(myApp, "Are you sure to close this window?", "Really Closing?",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 					System.exit(0);
 				}
 			}
-
 		});
 
 		util = new Util();
 		myApp.setBounds(10, 52, 1200, 670);
-		
-		//myApp.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+		// myApp.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		BorderLayout appLayout = new BorderLayout();
 		myApp.getContentPane().setLayout(appLayout);
 
 		// -------------------------------------------------------------------Information
 		// Panel, On The Top
 
-		//The FlowLayout class puts components in a row, sized at their preferred size
-		panelInfo = new JPanel();		
+		// The FlowLayout class puts components in a row, sized at their preferred size
+		panelInfo = new JPanel();
 		FlowLayout infoPanelLayout = new FlowLayout();
 		infoPanelLayout.setAlignment(FlowLayout.LEFT);
 		panelInfo.setLayout(infoPanelLayout);
 
-		lblSubject = new JLabel("Subject:");		
-		lblSubject.setPreferredSize(new Dimension ( 200,20));
+		lblSubject = new JLabel("Subject:");
+		lblSubject.setPreferredSize(new Dimension(200, 20));
 		panelInfo.add(lblSubject);
 
 		lblQuestionNumber = new JLabel("Question:");
-		lblQuestionNumber.setPreferredSize(new Dimension ( 180,20));		
+		lblQuestionNumber.setPreferredSize(new Dimension(180, 20));
 		panelInfo.add(lblQuestionNumber);
 
 		lblTotalOk = new JLabel("OK:");
-		lblTotalOk.setPreferredSize(new Dimension ( 50,20));		
+		lblTotalOk.setPreferredSize(new Dimension(50, 20));
 		panelInfo.add(lblTotalOk);
 
 		lblTotalFail = new JLabel("Fail: ");
-		lblTotalFail.setPreferredSize(new Dimension ( 100,20));		
+		lblTotalFail.setPreferredSize(new Dimension(100, 20));
 		panelInfo.add(lblTotalFail);
 
 		lblSource = new JLabel("Source:");
-		lblSource.setPreferredSize(new Dimension ( 500,20));		
+		lblSource.setPreferredSize(new Dimension(500, 20));
 		panelInfo.add(lblSource);
 
 		myApp.getContentPane().add(panelInfo, BorderLayout.PAGE_START);
@@ -230,14 +226,14 @@ public class MainClass implements PanelInterfaz {
 		// Defining the answer's button panel
 		{
 			buttonPanel = new JPanel();
-			//BoxLayout buttonPanelLayout = new BoxLayout(buttonPanel, BoxLayout.X_AXIS);
+			// BoxLayout buttonPanelLayout = new BoxLayout(buttonPanel, BoxLayout.X_AXIS);
 			FlowLayout buttonPanelLayout = new FlowLayout();
 			buttonPanelLayout.setAlignment(FlowLayout.RIGHT);
 			infoPanelLayout.setAlignment(FlowLayout.LEFT);
 			buttonPanel.setLayout(buttonPanelLayout);
 
 			optionsButton = new JButton[7];
-			String letters[] = { "A", "B", "C", "D", "E", "F", "G","H" };
+			String letters[] = { "A", "B", "C", "D", "E", "F", "G", "H" };
 
 			defaultBckColor = new JButton().getBackground();
 
@@ -256,14 +252,11 @@ public class MainClass implements PanelInterfaz {
 				buttonPanel.add(optionsButton[i]);
 			}
 
-			JButton buttonOptionChange = new JButton("");
-			buttonOptionChange.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/numbers.png")));
-			buttonPanel.add(buttonOptionChange);
-
 			// +++++++++++++++++++++++++++++++++++++++++++++++INCORRECT BUTTON
-			btnIncorrect = new JButton("Incorrect");		
-			//Image img = new ImageIcon (this.getClass().getResource("/wrong.png")).getImage();
-			btnIncorrect.setIcon( new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/wrong.png")));
+			btnIncorrect = new JButton("Incorrect");
+			// Image img = new ImageIcon
+			// (this.getClass().getResource("/wrong.png")).getImage();
+			btnIncorrect.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/wrong.png")));
 			btnIncorrect.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					if (currentQuestion != null) {
@@ -275,11 +268,14 @@ public class MainClass implements PanelInterfaz {
 					}
 				}
 			});
-			buttonPanel.add(btnIncorrect);
+
+			btnNumbers = new JButton("");
+			btnNumbers.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/numbers.png")));
+			buttonPanel.add(btnNumbers);
 
 			// +++++++++++++++++++++++++++++++++++++++++++++++ CORRECT BUTTON
 			btnCorrect = new JButton("Correct");
-			btnCorrect.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/ok.png")));			
+			btnCorrect.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/ok.png")));
 			btnCorrect.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					if (currentQuestion != null) {
@@ -296,7 +292,7 @@ public class MainClass implements PanelInterfaz {
 			//
 			// +++++++++++++++++++++++++++++++++++++++++++++++ FLIP BUTTON
 			btnFlipCard = new JButton("Flip Card");
-			btnFlipCard.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/flip.png")));			
+			btnFlipCard.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/flip.png")));
 			btnFlipCard.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					if ((shownQuestion) && (currentQuestion != null)) {
@@ -309,21 +305,23 @@ public class MainClass implements PanelInterfaz {
 				}
 			});
 			buttonPanel.add(btnFlipCard);
-			
+
 			// +++++++++++++++++++++++++++++++++++++++++++++++ BUTTON REFRESH
 			btnRefresh = new JButton("Refresh");
-			btnRefresh.setSelectedIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/refresh.png")));			
+			btnRefresh.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/refresh.png")));
+			btnRefresh.setSelectedIcon(
+					new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/refresh.png")));
 			btnRefresh.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					refresh();
 				}
-			}
-			);
+			});
 			buttonPanel.add(btnRefresh);
-			
+
 			// +++++++++++++++++++++++++++++++++++++++++++++++ NEXT BUTTON
 			btnNext = new JButton("Next");
-			btnNext.setSelectedIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/go-next.png")));			
+			btnNext.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/go-next.png")));
+			btnNext.setSelectedIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/go-next.png")));
 			btnNext.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					// if there is a working card set
@@ -334,23 +332,22 @@ public class MainClass implements PanelInterfaz {
 				}
 			});
 			buttonPanel.add(btnNext);
-			
-			myApp.getContentPane().add(buttonPanel,BorderLayout.PAGE_END);
+
+			myApp.getContentPane().add(buttonPanel, BorderLayout.PAGE_END);
 			// --------------------------------------------------------------------
 			// End Defining the answer's button panel
 		}
 
-		//   +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++CREATE  MENU
+		// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++CREATE MENU
 
 		JMenuBar menuBar = new JMenuBar();
 		myApp.setJMenuBar(menuBar);
 
 		JMenu mnSet = new JMenu("Card Set");
 		menuBar.add(mnSet);
-		JMenuItem mntmCreate = new JMenuItem("Create");			
+		JMenuItem mntmCreate = new JMenuItem("Create");
 		mntmCreate.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/folder-new.png")));
-		
-		
+
 		mntmCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fc = new JFileChooser();
@@ -373,22 +370,22 @@ public class MainClass implements PanelInterfaz {
 		mnSet.add(mntmCreate);
 
 		// +++++++++++++++++++++++++++++++++++++++++++++++++++OPEN MENU
-		JMenuItem mntmOpen = new JMenuItem("Open");		
+		JMenuItem mntmOpen = new JMenuItem("Open");
 		mntmOpen.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/folder_open-accept.png")));
 		mntmOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				loadCardSet();
 			}
-		});		
+		});
 		mnSet.add(mntmOpen);
 
 		// +++++++++++++++++++++++++++++++++++++++++++++++++++Save MENU
-		JMenuItem mntmSave = new JMenuItem("Save");				
+		JMenuItem mntmSave = new JMenuItem("Save");
 		mntmSave.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/save_accept.png")));
 		mntmSave.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				saveCard();				
+				saveCard();
 			}
 		});
 		mnSet.add(mntmSave);
@@ -397,21 +394,25 @@ public class MainClass implements PanelInterfaz {
 		JMenuItem mntmClose = new JMenuItem("Close");
 		mntmClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				currentCardSet = null;
-				lblSubject.setText("Subject:");
-				lblQuestionNumber.setText("");				
-				lblQuestion = new JLabel();
-				questionPanel.setViewportView(lblQuestion);
-				enableNavigation(false);
-				currentQuestion = null;
+				//currentCardSet = null;
+				//lblSubject.setText("Subject:");
+				//lblQuestionNumber.setText("");				
+				//questionPanel.setViewportView(lblQuestion);
+				//enableNavigation(false);
+				//currentQuestion = null;
 				if (dataModified) {
-					saveCard();
+					saveCard();					
+				}
+				if (JOptionPane.showConfirmDialog(myApp, "Are you sure to close this window?", "Really Closing?",
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+					System.exit(0);
 				}
 			}
 		});
 
-		// +++++++++++++++++++++++++++++++++++++++++++++++++++UPDATE MsetIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/folder_closed-delete3.png")));
-		
+		// +++++++++++++++++++++++++++++++++++++++++++++++++++UPDATE MsetIcon(new
+		// ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/folder_closed-delete3.png")));
+
 		JMenuItem mntmUpdate = new JMenuItem("Update");
 		mntmUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -505,7 +506,6 @@ public class MainClass implements PanelInterfaz {
 		mnSet.add(mntmAddQuestion);
 		mnSet.add(mntmStatisctics);
 		mnSet.add(mntmClose);
-
 		enableNavigation(false);
 
 		// frame.getContentPane().add(yellowLabel, BorderLayout.CENTER);
@@ -663,11 +663,11 @@ public class MainClass implements PanelInterfaz {
 
 			AppProperties appProperties = new AppProperties();
 			String lastDir = appProperties.getLastSetDirectory();
-			
+
 			FileNameExtensionFilter fileFilter = new FileNameExtensionFilter("Card Set File", "set");
 
 			JFileChooser fc = new JFileChooser();
-			 fc.setFileFilter(fileFilter);
+			fc.setFileFilter(fileFilter);
 
 			if (lastDir != null) {
 				fc.setCurrentDirectory(new File(lastDir));
