@@ -150,6 +150,7 @@ public class MainClass implements PanelInterfaz {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		Dimension btnDimension = new Dimension (100,34);
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		myApp = new JFrame();
 		myApp.setIconImage(Toolkit.getDefaultToolkit().getImage(MainClass.class.getResource("/me/theofrancisco/images/human_brain.png")));
@@ -240,6 +241,7 @@ public class MainClass implements PanelInterfaz {
 
 			for (int i = 0; i < optionsButton.length; i++) {
 				optionsButton[i] = new JButton(letters[i]);
+				optionsButton[i].setPreferredSize( new Dimension (50,34));
 
 				optionsButton[i].setBorder(UIManager.getBorder("Button.border"));
 				optionsButton[i].setSelected(false);
@@ -252,6 +254,11 @@ public class MainClass implements PanelInterfaz {
 				});
 				buttonPanel.add(optionsButton[i]);
 			}
+			
+			btnNumbers = new JButton("");
+			btnNumbers.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/numbers.png")));
+			btnNumbers.setPreferredSize( btnDimension );
+			buttonPanel.add(btnNumbers);
 
 			// +++++++++++++++++++++++++++++++++++++++++++++++INCORRECT BUTTON
 			btnIncorrect = new JButton("Incorrect");
@@ -270,9 +277,7 @@ public class MainClass implements PanelInterfaz {
 				}
 			});
 
-			btnNumbers = new JButton("");
-			btnNumbers.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/numbers.png")));
-			buttonPanel.add(btnNumbers);
+			
 
 			// +++++++++++++++++++++++++++++++++++++++++++++++ CORRECT BUTTON
 			btnCorrect = new JButton("Correct");
@@ -332,6 +337,7 @@ public class MainClass implements PanelInterfaz {
 					}
 				}
 			});
+			btnNext.setPreferredSize( btnDimension);
 			buttonPanel.add(btnNext);
 
 			myApp.getContentPane().add(buttonPanel, BorderLayout.PAGE_END);

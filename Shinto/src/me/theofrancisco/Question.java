@@ -13,14 +13,14 @@ public class Question implements Serializable {
 	 */
 	private String answerPath;  //Answer Path	
 	private ArrayList<AnswerResult> results; 
-	private int[] phases = {0,1,7,15,30};
+	//private int[] phases = {0,1,7,15,30};
 	/* phases
 	 * Dec 28, 2017. Dont need this anymore, since every right answer is going to count +1 and every wrong answer -1. 
 	 * The standard sort will be by the phase.
 	 */
 	private int phase;
 	private long date;   //date in days of the file when was last modified
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 012520200305;
 	private long questionID;
 	private String path;		//Question Path
 	;		
