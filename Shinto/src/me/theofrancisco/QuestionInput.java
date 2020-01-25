@@ -1,34 +1,32 @@
 package me.theofrancisco;
 
-import java.awt.Color;
-import java.awt.GridBagConstraints;
+/*
+ * Adding image icon to a label
+ * Image img = new ImageIcon(this.getClass().getResources("/resources.png")).getImage();
+ * myLabel.setIcon( new ImageIcon(img));
+ */
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import java.awt.GridBagLayout;
+import javax.swing.JLabel;
+import java.awt.GridBagConstraints;
+import javax.swing.border.BevelBorder;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-//import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-//import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-import javax.swing.BorderFactory;
+import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
 
 public class QuestionInput extends JPanel {
-	/**
-	 * 
-	 */
+
+	//private JPanel contentPane;
+	static QuestionInput questionInput = null;
 	private static final long serialVersionUID = 1L;
 	JLabel dirLbl;
 	JFileChooser fileChooser;
@@ -37,56 +35,83 @@ public class QuestionInput extends JPanel {
 	private File directory;
 	PanelInterfaz panelInterfaz;
 
-	JLabel questionLbl = new JLabel("Question");
-	JLabel answerLbl = new JLabel("Answer");
 
-	JButton addBtn;
-	JButton cancelBtn;
 
-	JTextArea txtQuestion = new JTextArea(10, 40);
-	JScrollPane questionScroll = new JScrollPane(txtQuestion);
-
-	JTextArea txtAnswer = new JTextArea(10, 40);
-	JScrollPane answerScroll = new JScrollPane(txtAnswer);
-
-	GridBagLayout layout = new GridBagLayout();
-	GridBagConstraints constraints;
-	GridBagConstraints constraints2;
-	
-	static QuestionInput questionInput = null;
-	
-	private GridBagConstraints createGridBagConstraint(int fill, int gridx, int gridy, int gridWidth, Insets intsets) {
-		GridBagConstraints newConstraints = new GridBagConstraints();
-		 newConstraints.fill = fill;
-		 newConstraints.gridx = gridx;
-		 newConstraints.gridy = gridy;
-		 newConstraints.gridwidth = gridWidth;
-		 newConstraints.insets = intsets;
-		 
-		return newConstraints;
-	}
-
-	private QuestionInput(JFrame _mainPanel, File _directory, PanelInterfaz _panelInterfaz) {
+	/**
+	 * Create the frame.
+	 */
+	public QuestionInput(JFrame _mainPanel, File _directory, PanelInterfaz _panelInterfaz) {		
 		panelInterfaz = _panelInterfaz;
 		mainPanel = _mainPanel;
 		directory = _directory;
-
-		setBounds(5, 5, 480, 460);
-		// General insets
-		Insets insets = new Insets(3, 3, 3, 3);
-
-		// questionScroll.setPreferredSize( new Dimension (200,50));
-
-		setLayout(layout);
-		// adding label directory
-		dirLbl = new JLabel(directory.getAbsolutePath());
-		constraints = createGridBagConstraint(GridBagConstraints.HORIZONTAL,0,0,8,insets);
-		dirLbl.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-		add(dirLbl, constraints);
-
-		// adding button "Change Directory"
-		changeDirBtn = new JButton("Change Dir");
-		changeDirBtn.addActionListener(new ActionListener() {
+		
+		setBounds(100, 100, 630, 499);		
+		setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		
+		GridBagLayout gbl_contentPane = new GridBagLayout();
+		gbl_contentPane.columnWidths = new int[]{0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_contentPane.columnWeights = new double[]{1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		setLayout(gbl_contentPane);
+		
+		JLabel lblQuestion = new JLabel("Question");
+		GridBagConstraints gbc_lblQuestion = new GridBagConstraints();
+		gbc_lblQuestion.anchor = GridBagConstraints.WEST;
+		gbc_lblQuestion.insets = new Insets(0, 0, 5, 5);
+		gbc_lblQuestion.gridx = 0;
+		gbc_lblQuestion.gridy = 0;
+		add(lblQuestion, gbc_lblQuestion);
+		
+		JTextArea textArea = new JTextArea();
+		GridBagConstraints gbc_textArea = new GridBagConstraints();
+		gbc_textArea.gridwidth = 3;
+		gbc_textArea.insets = new Insets(0, 0, 5, 0);
+		gbc_textArea.fill = GridBagConstraints.BOTH;
+		gbc_textArea.gridx = 0;
+		gbc_textArea.gridy = 1;
+		add(textArea, gbc_textArea);
+		
+		JButton btnAudio = new JButton("");
+		btnAudio.setToolTipText("Insert Audio");
+		btnAudio.setIcon(new ImageIcon(QuestionInput.class.getResource("/me/theofrancisco/images/Audio_File_24325.png")));
+		GridBagConstraints gbc_btnAudio = new GridBagConstraints();
+		gbc_btnAudio.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAudio.gridx = 1;
+		gbc_btnAudio.gridy = 2;
+		add(btnAudio, gbc_btnAudio);
+		
+		JButton btnInsertPicture = new JButton("");
+		btnInsertPicture.setToolTipText("Insert Image");
+		btnInsertPicture.setVerticalAlignment(SwingConstants.BOTTOM);
+		btnInsertPicture.setIcon(new ImageIcon(QuestionInput.class.getResource("/me/theofrancisco/images/picture.png")));
+		GridBagConstraints gbc_btnInsertPicture = new GridBagConstraints();
+		gbc_btnInsertPicture.insets = new Insets(0, 0, 5, 0);
+		gbc_btnInsertPicture.gridx = 2;
+		gbc_btnInsertPicture.gridy = 2;
+		add(btnInsertPicture, gbc_btnInsertPicture);
+		
+		JLabel lblAnswer = new JLabel("Answer");
+		GridBagConstraints gbc_lblAnswer = new GridBagConstraints();
+		gbc_lblAnswer.anchor = GridBagConstraints.WEST;
+		gbc_lblAnswer.insets = new Insets(0, 0, 5, 5);
+		gbc_lblAnswer.gridx = 0;
+		gbc_lblAnswer.gridy = 3;
+		add(lblAnswer, gbc_lblAnswer);
+		
+		JTextArea textArea_1 = new JTextArea();
+		GridBagConstraints gbc_textArea_1 = new GridBagConstraints();
+		gbc_textArea_1.gridwidth = 3;
+		gbc_textArea_1.insets = new Insets(0, 0, 5, 0);
+		gbc_textArea_1.fill = GridBagConstraints.BOTH;
+		gbc_textArea_1.gridx = 0;
+		gbc_textArea_1.gridy = 4;
+		add(textArea_1, gbc_textArea_1);
+		
+		JButton btnDirectory = new JButton("");
+		btnDirectory.setToolTipText("Change Saving Directory");
+		btnDirectory.setIcon(new ImageIcon(QuestionInput.class.getResource("/me/theofrancisco/images/directory.png")));
+		btnDirectory.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 				// Creates a file chooser
@@ -103,93 +128,39 @@ public class QuestionInput extends JPanel {
 				}
 			}
 		});
-		constraints2 = createGridBagConstraint (GridBagConstraints.HORIZONTAL,8,12,2,insets);		
-		//add(changeDirBtn, constraints2);
-		add(changeDirBtn);
-		// adding label question
-		constraints.gridx = 0;
-		constraints.gridy = 1;
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		add(questionLbl, constraints);
-
-		// adding question text area
-		constraints.gridx = 0;
-		constraints.gridy = 3;
-		constraints.gridwidth = 10;
-		add(questionScroll, constraints);
-
-		// adding label Answer
-		constraints.gridx = 0;
-		constraints.gridy = 10;
-		constraints.gridwidth = 10;
-		add(answerLbl, constraints);
-
-		// adding answer text area
-		constraints.gridx = 0;
-		constraints.gridy = 11;
-		constraints.gridwidth = 10;
-		add(answerScroll, constraints);
-
-		// adding Add Cancel Button
-		cancelBtn = new JButton("Cancel");
-		cancelBtn.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				panelInterfaz.setPanelsVisible(true);
-			}
-		});
-		constraints.gridx = 6;
-		constraints.gridy = 12;
-		constraints.gridwidth = 1;
-		add(cancelBtn, constraints);
-
-		// adding Add Question Button
-		addBtn = new JButton("Add Question");
-		addBtn.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					File tmpFile = File.createTempFile("QST_", ".txt", directory);
-					FileWriter fw = new FileWriter(tmpFile);
-					BufferedWriter bw = new BufferedWriter(fw);
-					String text = txtQuestion.getText();
-					bw.write(text);
-					bw.close();
-
-					// saving the answer
-					// 1-Get the name of the Question File, and replace QST by ANS
-					Path ansPath = tmpFile.toPath();
-					String fName = ansPath.getFileName().toString().replaceFirst("QST_", "ANS_");
-					ansPath = Paths.get(ansPath.getParent().toString(), fName);
-					// writing to the file
-					fw = new FileWriter(ansPath.toFile());
-					bw = new BufferedWriter(fw);
-					text = txtAnswer.getText();
-					bw.write(text);
-					bw.close();
-					txtAnswer.setText("");
-					txtQuestion.setText("");
-					txtQuestion.requestFocusInWindow();
-
-				} catch (IOException ex) {
-					JOptionPane.showInternalMessageDialog(mainPanel.getContentPane(), ex.getMessage(), "Error I/O",
-							ERROR);
-				}
-			}
-
-		});
-		constraints.gridx = 7;
-		constraints.gridy = 12;
-		constraints.gridwidth = 1;
-		constraints.fill = GridBagConstraints.NONE;
-		add(addBtn, constraints);
-
-		// Panel properties
-		// this.setPreferredSize( new Dimension (500,400));
-		setVisible(true);
-		setBorder(BorderFactory.createLineBorder(Color.PINK));
+				
+		GridBagConstraints gbc_btnDirectory = new GridBagConstraints();
+		gbc_btnDirectory.anchor = GridBagConstraints.EAST;
+		gbc_btnDirectory.insets = new Insets(0, 0, 5, 5);
+		gbc_btnDirectory.gridx = 0;
+		gbc_btnDirectory.gridy = 5;			
+		add(btnDirectory, gbc_btnDirectory);
+		
+		JButton button_1 = new JButton("");
+		button_1.setToolTipText("Insert Audio");
+		button_1.setIcon(new ImageIcon(QuestionInput.class.getResource("/me/theofrancisco/images/Audio_File_24325.png")));
+		GridBagConstraints gbc_button_1 = new GridBagConstraints();
+		gbc_button_1.insets = new Insets(0, 0, 5, 5);
+		gbc_button_1.gridx = 1;
+		gbc_button_1.gridy = 5;
+		add(button_1, gbc_button_1);
+		
+		JButton button_2 = new JButton("");
+		button_2.setToolTipText("Insert Image");
+		button_2.setIcon(new ImageIcon(QuestionInput.class.getResource("/me/theofrancisco/images/picture.png")));
+		GridBagConstraints gbc_button_2 = new GridBagConstraints();
+		gbc_button_2.insets = new Insets(0, 0, 5, 0);
+		gbc_button_2.gridx = 2;
+		gbc_button_2.gridy = 5;
+		add(button_2, gbc_button_2);
+		
+		JLabel lblDirectory = new JLabel("Directory:");
+		GridBagConstraints gbc_lblDirectory = new GridBagConstraints();
+		gbc_lblDirectory.insets = new Insets(0, 0, 0, 5);
+		gbc_lblDirectory.anchor = GridBagConstraints.SOUTHWEST;
+		gbc_lblDirectory.gridx = 0;
+		gbc_lblDirectory.gridy = 7;
+		add(lblDirectory, gbc_lblDirectory);
 	}
 
 	public static JPanel getQuestionInputPanel(JFrame _mainPanel, File _directory, PanelInterfaz _panelInterfaz) {
@@ -199,5 +170,4 @@ public class QuestionInput extends JPanel {
 		}
 		return questionInput;
 	}
-
 }

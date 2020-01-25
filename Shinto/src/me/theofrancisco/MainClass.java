@@ -4,11 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,7 +31,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -235,6 +232,7 @@ public class MainClass implements PanelInterfaz {
 			buttonPanel = new JPanel();
 			//BoxLayout buttonPanelLayout = new BoxLayout(buttonPanel, BoxLayout.X_AXIS);
 			FlowLayout buttonPanelLayout = new FlowLayout();
+			buttonPanelLayout.setAlignment(FlowLayout.RIGHT);
 			infoPanelLayout.setAlignment(FlowLayout.LEFT);
 			buttonPanel.setLayout(buttonPanelLayout);
 
@@ -258,13 +256,14 @@ public class MainClass implements PanelInterfaz {
 				buttonPanel.add(optionsButton[i]);
 			}
 
-			JButton buttonOptionChange = new JButton("1,2,3...");
+			JButton buttonOptionChange = new JButton("");
+			buttonOptionChange.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/numbers.png")));
 			buttonPanel.add(buttonOptionChange);
 
 			// +++++++++++++++++++++++++++++++++++++++++++++++INCORRECT BUTTON
 			btnIncorrect = new JButton("Incorrect");		
-			Image img = new ImageIcon (this.getClass().getResource("/wrong.png")).getImage();
-			btnIncorrect.setIcon( new ImageIcon (img));
+			//Image img = new ImageIcon (this.getClass().getResource("/wrong.png")).getImage();
+			btnIncorrect.setIcon( new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/wrong.png")));
 			btnIncorrect.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					if (currentQuestion != null) {
@@ -280,8 +279,7 @@ public class MainClass implements PanelInterfaz {
 
 			// +++++++++++++++++++++++++++++++++++++++++++++++ CORRECT BUTTON
 			btnCorrect = new JButton("Correct");
-			img = new ImageIcon (this.getClass().getResource("/ok.png")).getImage();
-			btnCorrect.setIcon( new ImageIcon (img));
+			btnCorrect.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/ok.png")));			
 			btnCorrect.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					if (currentQuestion != null) {
@@ -298,8 +296,7 @@ public class MainClass implements PanelInterfaz {
 			//
 			// +++++++++++++++++++++++++++++++++++++++++++++++ FLIP BUTTON
 			btnFlipCard = new JButton("Flip Card");
-			img = new ImageIcon (this.getClass().getResource("/flip.png")).getImage();
-			btnFlipCard.setIcon( new ImageIcon (img));
+			btnFlipCard.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/flip.png")));			
 			btnFlipCard.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					if ((shownQuestion) && (currentQuestion != null)) {
@@ -313,10 +310,20 @@ public class MainClass implements PanelInterfaz {
 			});
 			buttonPanel.add(btnFlipCard);
 			
+			// +++++++++++++++++++++++++++++++++++++++++++++++ BUTTON REFRESH
+			btnRefresh = new JButton("Refresh");
+			btnRefresh.setSelectedIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/refresh.png")));			
+			btnRefresh.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					refresh();
+				}
+			}
+			);
+			buttonPanel.add(btnRefresh);
+			
 			// +++++++++++++++++++++++++++++++++++++++++++++++ NEXT BUTTON
 			btnNext = new JButton("Next");
-			img = new ImageIcon (this.getClass().getResource("/go-next.png")).getImage();
-			btnNext.setIcon( new ImageIcon (img));
+			btnNext.setSelectedIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/go-next.png")));			
 			btnNext.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					// if there is a working card set
@@ -326,20 +333,9 @@ public class MainClass implements PanelInterfaz {
 					}
 				}
 			});
-
-			// +++++++++++++++++++++++++++++++++++++++++++++++ BUTTON REFRESH
-			btnRefresh = new JButton("Refresh");
-			img = new ImageIcon (this.getClass().getResource("/arrow-refresh.png")).getImage();
-			btnRefresh.setIcon( new ImageIcon (img));
-			btnRefresh.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					refresh();
-				}
-			});
-			buttonPanel.add(btnRefresh);
 			buttonPanel.add(btnNext);
-
-			myApp.getContentPane().add(buttonPanel, BorderLayout.PAGE_END);
+			
+			myApp.getContentPane().add(buttonPanel,BorderLayout.PAGE_END);
 			// --------------------------------------------------------------------
 			// End Defining the answer's button panel
 		}
@@ -351,10 +347,8 @@ public class MainClass implements PanelInterfaz {
 
 		JMenu mnSet = new JMenu("Card Set");
 		menuBar.add(mnSet);
-
-		JMenuItem mntmCreate = new JMenuItem("Create");
-		Image img = new ImageIcon (this.getClass().getResource("/folder-new.png")).getImage();
-		mntmCreate.setIcon( new ImageIcon (img));
+		JMenuItem mntmCreate = new JMenuItem("Create");			
+		mntmCreate.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/folder-new.png")));
 		
 		
 		mntmCreate.addActionListener(new ActionListener() {
@@ -367,7 +361,7 @@ public class MainClass implements PanelInterfaz {
 					currentCardSet = new Card(myApp);
 					currentCardSet.createSet(file);
 					lblSubject.setText(currentCardSet.getSubject());
-					myApp.setTitle("ShintoFlashCard. Study: " + currentCardSet.getSetName());
+					myApp.setTitle("Mastery. Study: " + currentCardSet.getSetName());
 					JOptionPane.showMessageDialog(myApp, "New Set Created With " + currentCardSet.size(), "Set Created",
 							JOptionPane.INFORMATION_MESSAGE);
 					showNextQuestion();
@@ -379,9 +373,8 @@ public class MainClass implements PanelInterfaz {
 		mnSet.add(mntmCreate);
 
 		// +++++++++++++++++++++++++++++++++++++++++++++++++++OPEN MENU
-		JMenuItem mntmOpen = new JMenuItem("Open");
-		img = new ImageIcon (this.getClass().getResource("/folder_open-accept.png")).getImage();
-		mntmOpen.setIcon( new ImageIcon (img));
+		JMenuItem mntmOpen = new JMenuItem("Open");		
+		mntmOpen.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/folder_open-accept.png")));
 		mntmOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				loadCardSet();
@@ -390,12 +383,12 @@ public class MainClass implements PanelInterfaz {
 		mnSet.add(mntmOpen);
 
 		// +++++++++++++++++++++++++++++++++++++++++++++++++++Save MENU
-		JMenuItem mntmSave = new JMenuItem("Save");
-		img = new ImageIcon (this.getClass().getResource("/save_accept.png")).getImage();
-		mntmSave.setIcon( new ImageIcon (img));
+		JMenuItem mntmSave = new JMenuItem("Save");				
+		mntmSave.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/save_accept.png")));
 		mntmSave.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				saveCard();
+				saveCard();				
 			}
 		});
 		mnSet.add(mntmSave);
@@ -406,8 +399,7 @@ public class MainClass implements PanelInterfaz {
 			public void actionPerformed(ActionEvent arg0) {
 				currentCardSet = null;
 				lblSubject.setText("Subject:");
-				lblQuestionNumber.setText("");
-				myApp.setTitle("ShintoFlashCard.");
+				lblQuestionNumber.setText("");				
 				lblQuestion = new JLabel();
 				questionPanel.setViewportView(lblQuestion);
 				enableNavigation(false);
@@ -418,14 +410,14 @@ public class MainClass implements PanelInterfaz {
 			}
 		});
 
-		// +++++++++++++++++++++++++++++++++++++++++++++++++++UPDATE MENU
+		// +++++++++++++++++++++++++++++++++++++++++++++++++++UPDATE MsetIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/folder_closed-delete3.png")));
+		
 		JMenuItem mntmUpdate = new JMenuItem("Update");
 		mntmUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				upDateCardSet();
 			}
 		});
-
 		JMenuItem mntmSort = new JMenuItem("Save As");
 		mnSet.add(mntmSort);
 		mnSet.add(mntmUpdate);
@@ -452,6 +444,7 @@ public class MainClass implements PanelInterfaz {
 		// +++++++++++++++++++++++++++++++++++++++++++++++++++ Default Order
 
 		JMenu mnSort = new JMenu("Sort");
+		mnSort.setIcon(new ImageIcon(MainClass.class.getResource("/me/theofrancisco/images/sort25x25.png")));
 		mnSet.add(mnSort);
 
 		JMenuItem mntmDefault = new JMenuItem("Default (Leitner System)");
