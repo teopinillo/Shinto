@@ -152,6 +152,7 @@ public class MainClass implements PanelInterfaz {
 	private void initialize() {
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		myApp = new JFrame();
+		myApp.setIconImage(Toolkit.getDefaultToolkit().getImage(MainClass.class.getResource("/me/theofrancisco/images/human_brain.png")));
 		myApp.setTitle("Mastery");			
 		myApp.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
